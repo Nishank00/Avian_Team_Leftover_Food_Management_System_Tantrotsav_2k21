@@ -23,15 +23,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     );
   }
 
-  Widget _buildFullscrenImage() {
-    return Image.asset(
-      'assets/fullscreen.jpg',
-      fit: BoxFit.cover,
-      height: double.infinity,
-      width: double.infinity,
-      alignment: Alignment.center,
-    );
-  }
+  // Widget _buildFullscrenImage() {
+  //   return Image.asset(
+  //     'assets/fullscreen.jpg',
+  //     fit: BoxFit.cover,
+  //     height: double.infinity,
+  //     width: double.infinity,
+  //     alignment: Alignment.center,
+  //   );
+  // }
 
   Widget _buildImage(String assetName, [double width = 350]) {
     return Image.asset('assets/images/$assetName', width: width);
@@ -61,8 +61,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               //right: 16,
             ),
             // child: _buildImage('flutter.png', 100),
-            child: Text("Welcome to HireHero",
-                style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+            child: Text("Welcome to Prasadam",
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
           ),
         ),
       ),
@@ -79,26 +79,26 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       // ),
       pages: [
         PageViewModel(
-          title: "Fractional shares",
+          title: "Joy of Sharing",
           body:
-              "Instead of having to buy an entire share, invest any amount you want.",
+              "Pull up a chair. Take a taste. Come join us. Life is so endlessly delicious.",
           image: _buildImage('img1.png'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Learn as you go",
+          title: "Good will",
           body:
-              "Download the Stockpile app and master the market with our mini-lesson.",
+              "Goodwill is no easy symbol of good wishes. It is an immeasurable and tremendous energy, the atomic energy of the spirit.",
           image: _buildImage('img2.png'),
           decoration: pageDecoration,
         ),
-        PageViewModel(
-          title: "Kids and teens",
-          body:
-              "Kids and teens can track their stocks 24/7 and place trades that you approve.",
-          image: _buildImage('img3.png'),
-          decoration: pageDecoration,
-        ),
+        // PageViewModel(
+        //   title: "Kids and teens",
+        //   body:
+        //       "Kids and teens can track their stocks 24/7 and place trades that you approve.",
+        //   image: _buildImage('img3.png'),
+        //   decoration: pageDecoration,
+        // ),
         // PageViewModel(
         //   title: "Full Screen Page",
         //   body:
@@ -112,8 +112,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         //   ),
         // ),
         PageViewModel(
-          title: "Another title page",
-          body: "Another beautiful body text for this example onboarding",
+          title: "Peace",
+          body:
+              "The life of inner peace, being harmonious and without stress, is the easiest type of existence",
           image: _buildImage('img4.png'),
           // footer: ElevatedButton(
           //   onPressed: () {

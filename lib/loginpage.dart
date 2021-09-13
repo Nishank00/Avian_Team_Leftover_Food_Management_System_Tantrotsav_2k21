@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                             width: 300,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: AssetImage("assets/images/img3.png"),
+                                    image: AssetImage("assets/images/img6.png"),
                                     fit: BoxFit.cover)),
                           ),
                           SizedBox(height: 20.0),
@@ -125,22 +125,22 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           Container(
                             height: 300,
-                            width: 300,
+                            width: 400,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image:
-                                        AssetImage("assets/images/img5.png"))),
+                                    image: AssetImage("assets/images/logo.png"),
+                                    fit: BoxFit.fitWidth)),
                           ),
                           SizedBox(
                             height: 20.0,
                           ),
-                          Text(
-                            "Hiring app",
-                            style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.0),
-                          ),
+                          // Text(
+                          //   "Hiring app",
+                          //   style: TextStyle(
+                          //       fontSize: 30,
+                          //       fontWeight: FontWeight.bold,
+                          //       letterSpacing: 1.0),
+                          // ),
                           SizedBox(
                             height: 20.0,
                           ),

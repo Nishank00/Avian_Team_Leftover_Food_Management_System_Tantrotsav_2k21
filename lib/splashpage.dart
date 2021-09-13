@@ -31,11 +31,14 @@ class _SplashPageState extends State<SplashPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 100,
-              child: Text("Add image"),
+            Container(
+              height: 400,
+              width: 400,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/images/logo.png"),
+                      fit: BoxFit.cover)),
             ),
-            Text("Splashpage..."),
           ],
         ),
       ),
