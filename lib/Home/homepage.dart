@@ -3,6 +3,8 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:prasad/Home/community_feed.dart';
 import 'package:prasad/Home/profile.dart';
+import 'package:prasad/Home/raise_ticket.dart';
+import 'package:prasad/config.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,7 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Widget> _buildScreens() {
-    return [CommunityFeed(), Profile()];
+    return [CommunityFeed(),RaiseNewDonation(),Profile()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -21,15 +23,23 @@ class _HomePageState extends State<HomePage> {
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
         title: ("Home"),
-        activeColorPrimary: CupertinoColors.activeBlue,
+        activeColorPrimary:primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.settings),
-        title: ("Settings"),
-        activeColorPrimary: CupertinoColors.activeBlue,
+        icon: Icon(Icons.description),
+        title: ("Donate"),
+        activeColorPrimary:primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
+       PersistentBottomNavBarItem(
+        icon: Icon(Icons.person_outline),
+        title: ("Profile"),
+        activeColorPrimary:primaryColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+
+
     ];
   }
 
@@ -57,16 +67,16 @@ class _HomePageState extends State<HomePage> {
       ),
       popAllScreensOnTapOfSelectedTab: true,
       popActionScreens: PopActionScreensType.all,
-      itemAnimationProperties: ItemAnimationProperties(
+      itemAnimationProperties: const ItemAnimationProperties(
         // Navigation Bar's items animation properties.
-        duration: Duration(milliseconds: 200),
+        duration: Duration(milliseconds: 600),
         curve: Curves.ease,
       ),
-      screenTransitionAnimation: ScreenTransitionAnimation(
+      screenTransitionAnimation:const ScreenTransitionAnimation(
         // Screen transition animation on change of selected tab.
         animateTabTransition: true,
         curve: Curves.ease,
-        duration: Duration(milliseconds: 200),
+        duration: Duration(milliseconds: 600),
       ),
       navBarStyle:
           NavBarStyle.style1, // Choose the nav bar style with this property.
