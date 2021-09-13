@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
 
   late FocusNode focusNodePin;
 
-  static final int _pinLength = 4;
+  static final int _pinLength = 6;
 
   /// Control the input text field.
   TextEditingController _pinEditingController = TextEditingController();
@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
       obscureStyle: ObscureStyle(
         isTextObscure: _obscureEnable,
       ),
-      hintText: '****',
+      hintText: '******',
     );
   }
 
