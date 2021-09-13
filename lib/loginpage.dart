@@ -1,5 +1,12 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 
@@ -18,10 +25,13 @@ class _LoginPageState extends State<LoginPage> {
   bool currentViewIsOtpPage = false;
   TextEditingController editingControllerPhone = TextEditingController();
   TextEditingController editingControllerOtp = TextEditingController();
+  TextEditingController editingControllerName = TextEditingController();
 
   late FocusNode focusNodePin;
 
   static final int _pinLength = 6;
+
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   /// Control the input text field.
   TextEditingController _pinEditingController = TextEditingController();
@@ -44,7 +54,19 @@ class _LoginPageState extends State<LoginPage> {
 
   late String strCode;
 
-  late String strPhone = '';
+  String strPhone = '';
+  String imgUrl = '';
+  String fileImgUrl = '';
+
+  File? fileImgPath;
+//  String countryCode='+91';
+
+  bool uploadImageToServer = false;
+
+  bool isLoading = false;
+  bool processind = false;
+
+  String _platformVersion = 'Unknown';
 
   @override
   void initState() {
@@ -179,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           currentViewIsOtpPage
                               ? Text(
-                                  'Enter the OTP sent to 91 - 123456789',
+                                  'Enter the OTP sent to 91 - $strPhone',
                                   style: TextStyle(
                                       fontSize: 15, color: Colors.black38),
                                 )
@@ -212,15 +234,12 @@ class _LoginPageState extends State<LoginPage> {
                                           ),
                                         ),
                                         TextSpan(
-                                            text: 'RESEND OTP',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.pinkAccent,
-                                                fontWeight: FontWeight.bold),
-                                            recognizer: TapGestureRecognizer()
-                                              ..onTap = () {
-                                                print("");
-                                              }),
+                                          text: 'RESEND OTP',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.pinkAccent,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ]),
                                     ),
                                   ),
@@ -238,19 +257,32 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           InkWell(
                             onTap: () {
+                              // setState(() {
+                              //   currentViewIsOtpPage = !currentViewIsOtpPage;
+                              // });
+                              print("Go to OTP page");
                               setState(() {
-                                currentViewIsOtpPage = !currentViewIsOtpPage;
+                                //    focusNodePin.requestFocus();
                               });
-                            },
-                            onLongPress: () {
-                              if (currentViewIsOtpPage) {
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomePage()),
-                                    (route) => false);
+                              if (!currentViewIsOtpPage) {
+                                processind = true;
+                                strPhone = editingControllerPhone.text.trim();
+                                verifyPhoneNumber(strPhone);
+                              } else {
+                                processind = true;
+
+                                submitForCheck();
                               }
                             },
+                            // onLongPress: () {
+                            //   if (currentViewIsOtpPage) {
+                            //     Navigator.pushAndRemoveUntil(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //             builder: (context) => HomePage()),
+                            //         (route) => false);
+                            //   }
+                            // },
                             child: Container(
                               height: 70,
                               width: 300,
@@ -262,7 +294,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               child: Center(
                                 child: Text(
-                                  currentViewIsOtpPage ? "Send OTP" : "Submit",
+                                  !currentViewIsOtpPage ? "Send OTP" : "Submit",
                                   style: TextStyle(
                                       fontSize: 14.0,
                                       color: Colors.white,
@@ -389,5 +421,306 @@ class _LoginPageState extends State<LoginPage> {
         autoFocus: false,
       ),
     );
+  }
+
+  FirebaseAuth initializeFirebaseAuth() {
+    return FirebaseAuth.instance;
+  }
+
+  bool checkNumberValid(String number) {
+    //if (number.length == 10) {
+    return true;
+    //} else {
+    // return false;
+    // }
+  }
+
+  verifyPhoneNumber(String number) async {
+    if (checkNumberValid(number)) {
+      FirebaseAuth auth = initializeFirebaseAuth();
+      await auth.verifyPhoneNumber(
+        phoneNumber: '+91' + number,
+        timeout: Duration(minutes: 2),
+        verificationCompleted: (AuthCredential cred) async {
+          await initializeFirebaseAuth()
+              .signInWithCredential(cred)
+              .then((value) {
+            if (value.user!.uid.length > 0) {
+              print(value.user!.uid);
+              editingControllerName.text = value.user!.displayName ?? '';
+              FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(value.user!.uid)
+                  .get()
+                  .then((doc) => {
+                        if (doc.exists)
+                          {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()))
+                          }
+                        else
+                          {
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => SignupPage()))
+                          }
+                      });
+
+              //_modalBottomSheetMenu(value.user.photoURL ?? '');
+            }
+          });
+        },
+        verificationFailed: funVerificationFailed,
+        codeSent: funVerificationCodeSent,
+        codeAutoRetrievalTimeout: (String verificationId) {
+          //ignored Auto Retrieval Timeout
+        },
+      );
+    }
+  }
+
+  funVerificationFailed(FirebaseAuthException exception) {
+    if (exception.code == 'invalid-phone-number') {
+      Fluttertoast.showToast(
+          msg: 'The provided phone number is not valid.',
+          backgroundColor: Colors.orange);
+      print('The provided phone number is not valid.');
+    } else {
+      print(exception.code);
+    }
+  }
+
+  funVerificationCodeSent(String verificationId, [int? resendToken]) async {
+    //phoneNumber = editingControllerPhone.text;
+    strVerifyId = verificationId;
+    setState(() {
+      processind = false;
+      currentViewIsOtpPage = true;
+    });
+  }
+
+  submitForCheck() async {
+    if (strCode.isEmpty) return;
+    try {
+      AuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: strVerifyId, smsCode: strCode);
+      await initializeFirebaseAuth()
+          .signInWithCredential(credential)
+          .then((value) {
+        if (value.user!.uid.length > 0) {
+          print(value.user);
+          editingControllerName.text = value.user!.displayName ?? '';
+          if (value.user!.phoneNumber == '+911234567890') {
+            //Admin panel
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
+          } else {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+                (route) => false);
+          }
+
+          //_modalBottomSheetMenu(value.user.photoURL ?? '');
+        }
+      });
+    } catch (Exception) {
+      //  print("Verification code is wrong");
+    }
+  }
+
+  void _modalBottomSheetMenu(String imgUrl) {
+    print("File Image URL: $fileImgUrl");
+    print("Image Url: $imgUrl");
+    print("File Image Path $fileImgPath");
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        backgroundColor: Colors.white,
+        isScrollControlled: true,
+        isDismissible: false,
+        context: context,
+        builder: (builder) {
+          return StatefulBuilder(
+            builder: (BuildContext context, modalSetState) {
+              cropImage(PickedFile image) async {}
+
+              pickFromPhone() async {}
+
+              return Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(16.0),
+                      height: 200.0,
+                      color: Colors
+                          .transparent, //could change this to Color(0xFF737373),
+                      //so you don't have to change MaterialApp canvasColor
+                      child: Column(
+                        children: [
+                          Center(
+                            child: CircleAvatar(
+                              radius: 30.0,
+                              // backgroundImage: imgUrl == '' && fileImgUrl == ''
+                              //     ? AssetImage('assets/logo.png')
+                              //     : fileImgUrl != ''
+                              //         ? FileImage(File(fileImgUrl))
+                              //         : NetworkImage(imgUrl),
+                              backgroundColor: Colors.transparent,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Center(
+                            child: InkWell(
+                              onTap: () async {
+                                print("FilePath: $fileImgUrl");
+                                await pickFromPhone();
+                              },
+                              child: Text(
+                                'change',
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.teal,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                height: 48,
+                                width: MediaQuery.of(context).size.width -
+                                    16 -
+                                    16 -
+                                    10 -
+                                    46,
+                                child: TextFormField(
+                                  cursorColor: Colors.black,
+                                  keyboardType: TextInputType.name,
+                                  controller: editingControllerName,
+                                  decoration: new InputDecoration(
+                                      border: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      errorBorder: InputBorder.none,
+                                      disabledBorder: InputBorder.none,
+                                      contentPadding: EdgeInsets.only(
+                                          left: 15,
+                                          bottom: 11,
+                                          top: 11,
+                                          right: 15),
+                                      hintText: "Your Name"),
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.black87),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  if (editingControllerName.text.trim().length >
+                                      3) {
+                                    insertUserData(
+                                        editingControllerName.text.trim(),
+                                        profileImgUrl: fileImgUrl);
+                                    modalSetState(() {
+                                      isLoading = true;
+                                    });
+                                  } else {
+                                    fullNameEmpty(
+                                        "Please enter your full name");
+                                  }
+                                },
+                                child: Container(
+                                  height: 56,
+                                  width: 56,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.teal,
+                                  ),
+                                  child: Center(
+                                    child: isLoading
+                                        ? CircularProgressIndicator(
+                                            backgroundColor: Colors.white)
+                                        : Icon(
+                                            Icons.arrow_forward_ios_outlined,
+                                            color: Colors.white,
+                                            size: 26.0,
+                                          ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        });
+  }
+
+  void insertUserData(String name, {required String profileImgUrl}) async {
+    String imgUr = "";
+    if (uploadImageToServer) {
+      imgUr = await uploadToServer(profileImgUrl);
+    }
+
+    var firebaseAuth;
+    User user = await firebaseAuth.currentUser;
+    if (user != null) {
+      // UserUpdateInfo updateInfo = UserUpdateInfo();
+      // updateInfo.displayName = name;
+      // updateInfo.photoUrl = imgUr ?? '';
+      firebaseAuth.currentUser
+          .updateProfile(displayName: name, photoURL: imgUrl);
+      user.updateProfile(displayName: name, photoURL: imgUrl).then((value) {
+        // FireQuery.createOrUpdatedUser(
+        //   imgUrl: imgUr,
+        //   name: name,
+        // );
+
+        // FireQuery.updateProfileImgInChatRooms(imgUr);
+      }).catchError((error) {});
+    }
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context, true);
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context, true);
+      }
+    }
+  }
+
+  void fullNameEmpty(String toastMessage) {
+    Fluttertoast.showToast(
+      msg: toastMessage,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.white,
+      textColor: Colors.teal,
+      fontSize: 16.0,
+    );
+  }
+
+  Future<String> uploadToServer(String imgUrl) async {
+    var snapshot = await FirebaseStorage.instance
+        .ref()
+        .child('chat_images/$imgUrl')
+        .putFile(File(imgUrl));
+    String photoUrl = await snapshot.ref.getDownloadURL();
+
+    print('File Uploaded');
+    return await snapshot.ref.getDownloadURL();
   }
 }
