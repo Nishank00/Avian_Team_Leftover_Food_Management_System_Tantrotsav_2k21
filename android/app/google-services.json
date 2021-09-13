@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1012351403522",
+    "project_id": "prasad-2af6f",
+    "storage_bucket": "prasad-2af6f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012351403522:android:bd37b6021d54d1a61cc91b",
+        "android_client_info": {
+          "package_name": "com.example.prasad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1012351403522-ugcr2q5ob3kq9092ho9tkgc5qe9ugqki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV9JixD-aodrODQvcxsMkwE5qlcEe9unQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1012351403522-ugcr2q5ob3kq9092ho9tkgc5qe9ugqki.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
