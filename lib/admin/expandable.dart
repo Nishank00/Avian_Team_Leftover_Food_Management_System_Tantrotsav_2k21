@@ -80,6 +80,9 @@ class _CardWidgetState extends State<CardWidget> {
                   Text(
                     "${widget.doc['status']}",
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -91,7 +94,8 @@ class _CardWidgetState extends State<CardWidget> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.call))
+                      widget.isAdmin ? 
+                      IconButton(onPressed: () {}, icon: Icon(Icons.call)) : Container()
                     ],
                   ),
                 ],

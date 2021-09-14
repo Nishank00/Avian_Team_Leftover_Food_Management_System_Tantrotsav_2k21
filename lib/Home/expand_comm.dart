@@ -17,7 +17,7 @@ class Card1 extends StatelessWidget {
             SizedBox(
               height: 150,
               child: Container(
-                decoration: BoxDecoration(
+                decoration:const BoxDecoration(
                   color: Colors.orange,
                   shape: BoxShape.rectangle,
                 ),

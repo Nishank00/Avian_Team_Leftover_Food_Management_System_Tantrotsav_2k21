@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocode/geocode.dart';
+import 'package:prasad/Home/my_donation.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import '../config.dart';
 import 'package:location/location.dart';
@@ -123,9 +124,12 @@ class _RaiseNewDonationState extends State<RaiseNewDonation> {
         "typeOfFood": _chosenFoodType,
         "quantityOfFood": _countController.text,
         "preferredTime": _timeController.text
-      });
+      }).then((value) => {
+                Fluttertoast.showToast(msg: "Your report has been submitted"),
+                _showMyDialog(),
+    donationNumber = randomNumeric(10)
 
-      Fluttertoast.showToast(msg: "Your report has been submitted");
+              });
     } else {
       Navigator.of(context).pop();
 
@@ -145,6 +149,62 @@ class _RaiseNewDonationState extends State<RaiseNewDonation> {
     super.initState();
   }
 
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Excellent',
+            style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                color: primaryColor),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  "Your Donation Ticket Has been raised\nYou will hear from us shortly",
+                  style: TextStyle( 
+                    fontSize: 15,
+                  ),
+                )
+                //CONTEnt HERE
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              //color: Colors.teal,
+              child: Text(
+                'Go to My Donation',
+                style: TextStyle(color: primaryColor),
+              ),
+              onPressed: () async {
+                
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyDonations()),
+                     );
+                }),
+              
+      
+            TextButton(
+              child: Text(
+                'Okay',
+                style: TextStyle(color: primaryColor),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Form(

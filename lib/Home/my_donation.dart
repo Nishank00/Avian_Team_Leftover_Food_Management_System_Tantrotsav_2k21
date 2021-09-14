@@ -25,8 +25,8 @@ class _MyDonationsState extends State<MyDonations> {
             stream: FirebaseFirestore.instance
                 .collection("FoodTickets")
                .where('createdBy',
-                                isEqualTo: FirebaseAuth
-                                    .instance.currentUser!.phoneNumber)
+                isEqualTo: FirebaseAuth
+                .instance.currentUser!.phoneNumber)
                 .snapshots(),
             // ignore: missing_return
             builder: (context, snapshot) {
