@@ -183,7 +183,7 @@ class _RaiseNewDonationState extends State<RaiseNewDonation> {
                 style: TextStyle(color: primaryColor),
               ),
               onPressed: () async {
-                
+                  Navigator.of(context).pop();
                   Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MyDonations()),
