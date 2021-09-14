@@ -3,7 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:prasad/Home/my_donations.dart';
+import 'package:prasad/config.dart';
 import 'package:prasad/loginpage.dart';
+
+import 'reward_page.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -39,7 +43,10 @@ class _ProfileState extends State<Profile> {
         return AlertDialog(
           title: Text(
             'Sign Out',
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                color: primaryColor),
           ),
           content: SingleChildScrollView(
             child: ListBody(
@@ -59,6 +66,7 @@ class _ProfileState extends State<Profile> {
               //color: Colors.teal,
               child: Text(
                 'Yes',
+                style: TextStyle(color: primaryColor),
               ),
               onPressed: () async {
                 await FirebaseAuth.instance.signOut().then((value) {
@@ -77,6 +85,7 @@ class _ProfileState extends State<Profile> {
             TextButton(
               child: Text(
                 'No',
+                style: TextStyle(color: primaryColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -154,14 +163,14 @@ class _ProfileState extends State<Profile> {
             margin: EdgeInsets.only(left: 20, right: 20),
             child: ListTile(
               onTap: () {
-                // Navigator.push(
-                //     context, MaterialPageRoute(builder: (context) => MyClaims()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyDonations()));
               },
               leading: Icon(
                 Icons.plagiarism_outlined,
                 color: Colors.green,
               ),
-              title: Text('My Claims'),
+              title: Text('My Donations'),
               trailing: Icon(Icons.navigate_next),
             ),
           ),
@@ -196,8 +205,8 @@ class _ProfileState extends State<Profile> {
             margin: EdgeInsets.only(left: 20, right: 20),
             child: ListTile(
               onTap: () {
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => RewardsPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => RewardsPage()));
               },
               leading: Icon(
                 Icons.local_attraction_outlined,

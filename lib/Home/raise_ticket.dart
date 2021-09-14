@@ -109,7 +109,7 @@ class _RaiseNewDonationState extends State<RaiseNewDonation> {
           .collection("FoodTickets")
           .doc(donationNumber)
           .set({
-        "status": "Pending",
+        "status": "Waiting for approval",
         "reportNumber": donationNumber,
         "createdAt": FieldValue.serverTimestamp(),
         "createdBy": FirebaseAuth.instance.currentUser!.phoneNumber,
@@ -120,6 +120,7 @@ class _RaiseNewDonationState extends State<RaiseNewDonation> {
         "donatorPhone": _phoneController.text,
         "ocassion": _chosenValue,
         "isVeg": isVeg,
+        "typeOfFood": _chosenFoodType,
         "quantityOfFood": _countController.text,
         "preferredTime": _timeController.text
       });
