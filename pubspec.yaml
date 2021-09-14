@@ -48,14 +48,10 @@ dependencies:
   location: ^4.3.0
   toggle_switch: ^1.2.0
   numberpicker: ^2.0.1
-  permission_handler: ^8.1.6
-  
+  permission_handler: ^8.1.6  
   geocode: ^1.0.1
-  # geocoder:
-  #   git:
-  #     https://github.com/aloisdeniel/flutter_geocoder.git
-
-  
+  date_format: ^2.0.4
+  random_string: ^2.3.1
 
 
 dev_dependencies:
