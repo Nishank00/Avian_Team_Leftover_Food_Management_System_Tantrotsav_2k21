@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:prasad/admin/add_post.dart';
 import 'package:prasad/admin/delivered.dart';
 import 'package:prasad/admin/pending_tickets.dart';
 import 'package:prasad/admin/picked_up.dart';
 import 'package:prasad/admin/waiting_pickup.dart';
 import 'package:prasad/config.dart';
 
-
-class Option{
+class Option {
   final String title;
 
-
-   final VoidCallback onTap;
-    Option(this.title, this.onTap);
+  final VoidCallback onTap;
+  Option(this.title, this.onTap);
 }
-
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({Key? key}) : super(key: key);
@@ -23,41 +21,42 @@ class AdminHomePage extends StatefulWidget {
 }
 
 class _AdminHomePageState extends State<AdminHomePage> {
-  List<Option> options = []; 
+  List<Option> options = [];
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-  options.add(Option('Pending Tickets', () {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => PendingTicket()));
-  }));
-  options.add(Option('Waiting for pickup', () { 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => WaitingPickup()));
-
-  }));
-  options.add(Option('Picked Up', () {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => PickedUp()));
-
-  }));
-  options.add(Option('Happily delivered', () { 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Delivered()));
-
-  }));
-
+    options.add(Option('Pending Tickets', () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => PendingTicket()));
+    }));
+    options.add(Option('Waiting for pickup', () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => WaitingPickup()));
+    }));
+    options.add(Option('Picked Up', () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => PickedUp()));
+    }));
+    options.add(Option('Happily delivered', () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Delivered()));
+    }));
+    options.add(Option('Add Post', () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AddPost()));
+    }));
   }
-  
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
-        title:const Text('Admin Panel'),
+        title: const Text('Admin Panel'),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: GridView.builder(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 300,
@@ -70,7 +69,10 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 onTap: options[index].onTap,
                 child: Container(
                   alignment: Alignment.center,
-                  child: Text(options[index].title,style: TextStyle(color: Colors.white),),
+                  child: Text(
+                    options[index].title,
+                    style: TextStyle(color: Colors.white),
+                  ),
                   decoration: BoxDecoration(
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(15)),
