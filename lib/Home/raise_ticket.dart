@@ -1,8 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocode/geocode.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import '../config.dart';
+import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart';
+// import 'package:geocoder/geocoder.dart';
+// import 'package:geocoder/geocoder.dart' as geoCodeModel;
 
 class RaiseNewDonation extends StatefulWidget {
   const RaiseNewDonation({Key? key}) : super(key: key);
@@ -13,6 +19,50 @@ class RaiseNewDonation extends StatefulWidget {
 
 class _RaiseNewDonationState extends State<RaiseNewDonation> {
   late String _chosenValue = 'Select Ocassion';
+
+  String foodLocation = '';
+  late double foodLatitude;
+  late double foodLongitude;
+
+  Location location = new Location();
+  GeoCode _geoCode = GeoCode();
+  static bool callLocation = true;
+
+  late bool _serviceEnabled;
+  late Permission _permissionGranted;
+  late LocationData _locationData;
+
+  Future<void> fetchLocation() async {
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        Fluttertoast.showToast(msg: "Permission Denied");
+      }
+    }
+
+    if (await Permission.location.request().isGranted) {
+      Fluttertoast.showToast(msg: "Location permission granted");
+    } else {
+      Fluttertoast.showToast(msg: "Location permission denied");
+    }
+
+    _locationData = await location.getLocation();
+    // final coordinates = new geoCodeModel.Coordinates(
+    //     _locationData.latitude, _locationData.longitude);
+    // var addresses =
+    //     await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var addresses = await _geoCode.reverseGeocoding(
+        latitude: _locationData.latitude!, longitude: _locationData.longitude!);
+    var first = addresses.streetNumber;
+    foodLatitude = _locationData.latitude!;
+    foodLongitude = _locationData.longitude!;
+    foodLocation =
+        "${addresses.streetNumber} ${addresses.streetAddress} ${addresses.postal}";
+    setState(() {});
+    print("CUUUUUUURRRRREEEEENNNNTTTT::::${first}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -170,7 +220,7 @@ class _RaiseNewDonationState extends State<RaiseNewDonation> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Select Prepration Type : ',
+                'Select Food Type : ',
                 style: TextStyle(
                     fontSize: 16,
                     color: primaryColor,
@@ -196,7 +246,7 @@ class _RaiseNewDonationState extends State<RaiseNewDonation> {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }
