@@ -21,13 +21,13 @@ class _HomePageState extends State<HomePage> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.home),
-        title: ("Home"),
+        icon: Icon(Icons.question_answer_outlined),
+        title: ("Feed"),
         activeColorPrimary:primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.description),
+        icon: Icon(Icons.description_outlined),
         title: ("Donate"),
         activeColorPrimary:primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,

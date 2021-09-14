@@ -578,6 +578,9 @@ class _RaiseNewDonationState extends State<RaiseNewDonation> {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
+        ),
+        SizedBox(
+          height: 50,
         )
       ]),
     );
