@@ -15,13 +15,17 @@ class Card1 extends StatelessWidget {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 150,
+              height: 200,
+              width: double.infinity,
               child: Container(
-                decoration:const BoxDecoration(
-                  color: Colors.orange,
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                 ),
-                child: Image.network(doc['photoUrl']),
+                child: Image.network(
+                  doc['photoUrl'],
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             ScrollOnExpand(
