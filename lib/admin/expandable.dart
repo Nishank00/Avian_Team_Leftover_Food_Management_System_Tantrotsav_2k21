@@ -30,7 +30,7 @@ class _CardWidgetState extends State<CardWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       child: Container(
         decoration: BoxDecoration(
           gradient: const LinearGradient(colors: [
@@ -74,18 +74,26 @@ class _CardWidgetState extends State<CardWidget> {
             ),
             collapsed: Padding(
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Flexible(
-                    child: Text(
-                      "${widget.doc['reportLocation']}",
-                      softWrap: true,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                  Text(
+                    "${widget.doc['status']}",
                   ),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.call))
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          "${widget.doc['reportLocation']}",
+                          softWrap: true,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      IconButton(onPressed: () {}, icon: Icon(Icons.call))
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -140,34 +148,27 @@ class _CardWidgetState extends State<CardWidget> {
       ),
     );
   }
-    Future<void> changeState() async {
-      if (widget.doc['status'] == 'Waiting for approval') {
-          await FirebaseFirestore.instance
+
+  Future<void> changeState() async {
+    if (widget.doc['status'] == 'Waiting for approval') {
+      await FirebaseFirestore.instance
           .collection("FoodTickets")
           .doc(widget.doc['reportNumber'])
-          .update({
-           'status' : 'Waiting for pick up'
-          });
-      } else if (widget.doc['status'] == 'Waiting for pick up')  {
+          .update({'status': 'Waiting for pick up'});
+    } else if (widget.doc['status'] == 'Waiting for pick up') {
+      await FirebaseFirestore.instance
+          .collection("FoodTickets")
+          .doc(widget.doc['reportNumber'])
+          .update({'status': 'Waiting for distribution'});
+    } else if (widget.doc['status'] == 'Waiting for distribution') {
+      {
         await FirebaseFirestore.instance
-          .collection("FoodTickets")
-          .doc(widget.doc['reportNumber'])
-          .update({
-           'status' : 'Waiting for distribution'
-          });
-      } else if (widget.doc['status'] == 'Waiting for distribution') { {
-        await FirebaseFirestore.instance
-          .collection("FoodTickets")
-          .doc(widget.doc['reportNumber'])
-          .update({
-           'status' : 'Happily delivered'
-          });
+            .collection("FoodTickets")
+            .doc(widget.doc['reportNumber'])
+            .update({'status': 'Happily delivered'});
       }
-    
-          
 
       Fluttertoast.showToast(msg: "status Changed");
-   
+    }
   }
-    }
-    }
+}

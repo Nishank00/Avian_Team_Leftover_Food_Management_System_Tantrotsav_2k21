@@ -4,10 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:prasad/Home/my_donations.dart';
+
 import 'package:prasad/config.dart';
 import 'package:prasad/loginpage.dart';
 
+import 'my_donation.dart';
 import 'reward_page.dart';
 
 class Profile extends StatefulWidget {
@@ -178,24 +179,7 @@ class _ProfileState extends State<Profile> {
           Padding(
             padding: EdgeInsets.only(top: 10),
           ),
-          Card(
-            elevation: 3,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            margin: EdgeInsets.only(left: 20, right: 20),
-            child: ListTile(
-              onTap: () {
-                // Navigator.push(
-                //     context, MaterialPageRoute(builder: (context) => Myfound()));
-              },
-              leading: Icon(
-                Icons.pages_outlined,
-                color: Colors.blueGrey,
-              ),
-              title: Text('Found items'),
-              trailing: Icon(Icons.navigate_next),
-            ),
-          ),
+       
           Padding(
             padding: EdgeInsets.only(top: 10),
           ),
@@ -220,24 +204,7 @@ class _ProfileState extends State<Profile> {
           Padding(
             padding: EdgeInsets.only(top: 10),
           ),
-          Card(
-            elevation: 3,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            margin: EdgeInsets.only(left: 20, right: 20),
-            child: ListTile(
-              onTap: () {
-                // Navigator.push(
-                //     context, MaterialPageRoute(builder: (context) => Account()));
-              },
-              leading: Icon(
-                Icons.account_circle_outlined,
-                color: Colors.blue,
-              ),
-              title: Text('Account'),
-              trailing: Icon(Icons.navigate_next),
-            ),
-          ),
+       
           Padding(
             padding: EdgeInsets.only(top: 10),
           ),
