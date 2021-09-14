@@ -267,11 +267,13 @@ class _LoginPageState extends State<LoginPage> {
                               });
                               if (!currentViewIsOtpPage) {
                                 processind = true;
+                                isLoading = true;
+
                                 strPhone = editingControllerPhone.text.trim();
                                 verifyPhoneNumber(strPhone);
                               } else {
                                 processind = true;
-
+                                isLoading = true;
                                 submitForCheck();
                               }
                             },
@@ -294,13 +296,18 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                               child: Center(
-                                child: Text(
-                                  !currentViewIsOtpPage ? "Send OTP" : "Submit",
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                child: isLoading
+                                    ? CircularProgressIndicator(
+                                        backgroundColor: Colors.white)
+                                    : Text(
+                                        !currentViewIsOtpPage
+                                            ? "Send OTP"
+                                            : "Submit",
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                               ),
                             ),
                           ),
@@ -471,6 +478,8 @@ class _LoginPageState extends State<LoginPage> {
                       });
 
               //_modalBottomSheetMenu(value.user.photoURL ?? '');
+            }else{
+              isLoading = false;
             }
           });
         },
@@ -499,6 +508,8 @@ class _LoginPageState extends State<LoginPage> {
     strVerifyId = verificationId;
     setState(() {
       processind = false;
+              isLoading = false;
+
       currentViewIsOtpPage = true;
     });
   }
@@ -517,7 +528,9 @@ class _LoginPageState extends State<LoginPage> {
           if (value.user!.phoneNumber == '+911234567890') {
             //Admin panel
             Navigator.pushAndRemoveUntil(
-                context, MaterialPageRoute(builder: (context) => AdminHomePage()), (route) => false);
+                context,
+                MaterialPageRoute(builder: (context) => AdminHomePage()),
+                (route) => false);
           } else {
             Navigator.pushAndRemoveUntil(
                 context,
@@ -529,6 +542,7 @@ class _LoginPageState extends State<LoginPage> {
         }
       });
     } catch (Exception) {
+      isLoading = false;
       //  print("Verification code is wrong");
     }
   }
