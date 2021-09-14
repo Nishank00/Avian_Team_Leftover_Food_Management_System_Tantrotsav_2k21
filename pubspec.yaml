@@ -45,9 +45,15 @@ dependencies:
   firebase_storage: ^10.0.3
   image_picker: ^0.8.4
   cached_network_image: ^3.1.0
+  location: ^4.3.0
   toggle_switch: ^1.2.0
   numberpicker: ^2.0.1
-  date_format: ^2.0.4 
+  permission_handler: ^8.1.6  
+  geocode: ^1.0.1
+  date_format: ^2.0.4
+  random_string: ^2.3.1
+  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
