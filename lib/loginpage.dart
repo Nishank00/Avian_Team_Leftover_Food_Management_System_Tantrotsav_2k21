@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
+import 'package:prasad/admin/admin_homepage.dart';
 
 import 'config.dart';
 import 'Home/homepage.dart';
@@ -515,8 +516,8 @@ class _LoginPageState extends State<LoginPage> {
           editingControllerName.text = value.user!.displayName ?? '';
           if (value.user!.phoneNumber == '+911234567890') {
             //Admin panel
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => HomePage()));
+            Navigator.pushAndRemoveUntil(
+                context, MaterialPageRoute(builder: (context) => AdminHomePage()), (route) => false);
           } else {
             Navigator.pushAndRemoveUntil(
                 context,
