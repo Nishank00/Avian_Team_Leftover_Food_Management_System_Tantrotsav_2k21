@@ -21,7 +21,7 @@ class _PendingTicketState extends State<PendingTicket> {
         body: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection("FoodTickets")
-                .where('status', isEqualTo: 'waiting for approval')
+                .where('status', isEqualTo: 'Waiting for approval')
                 .orderBy('createdAt', descending: true)
                 .snapshots(),
             // ignore: missing_return
@@ -51,7 +51,7 @@ class _PendingTicketState extends State<PendingTicket> {
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     final doc = snapshot.data!.docs[index];
-                    return CardWidget();
+                    return CardWidget(doc: doc,isAdmin: true,);
                   },
                 );
               }

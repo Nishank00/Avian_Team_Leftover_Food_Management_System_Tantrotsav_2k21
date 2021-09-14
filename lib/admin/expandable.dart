@@ -1,13 +1,29 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:prasad/config.dart';
 
+class CardWidget extends StatefulWidget {
+  final doc;
+  final bool isAdmin;
+   const CardWidget({Key? key,required this.doc, required this.isAdmin}) : super(key: key);
 
+  @override
+  State<CardWidget> createState() => _CardWidgetState();
+}
 
+class _CardWidgetState extends State<CardWidget> {
+     bool isVeg=true;
 
-class CardWidget extends StatelessWidget {
-  const CardWidget({
-    Key? key,
-  }) : super(key: key);
+  @override
+  void initState (){
+    if( widget.doc['isVeg']==1){
+      isVeg = false;
+
+    }else{
+      isVeg = true;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,35 +33,39 @@ class CardWidget extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: const LinearGradient(colors: [
             Color.fromRGBO(132, 131, 131, 0.39),
-            Color.fromRGBO(54, 54, 54, 0.5)
+            Color(0xff6c63ff),
           ]),
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
           border: Border.all(
-            color: const Color.fromRGBO(81, 73, 134, 0.89),
+            color: primaryColor,
           ),
         ),
         child: ExpandableTheme(
           data: const ExpandableThemeData(
               iconPlacement: ExpandablePanelIconPlacement.right,
-              iconColor: Colors.red,
-              animationDuration: Duration(milliseconds: 500)),
+              iconColor: Colors.white,
+              animationDuration: Duration(milliseconds: 400)),
           child: ExpandablePanel(
             theme: const ExpandableThemeData(
                 iconPlacement: ExpandablePanelIconPlacement.right),
             header: Padding(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    "6 Months\nof Premium",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    "${widget.doc['donatorName']}",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "₹ 600",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    "${widget.doc['donatorPhone']}",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    "#${widget.doc['reportNumber']}",
+                    style: TextStyle(fontSize: 12),
                   ),
                 ],
               ),
@@ -54,14 +74,16 @@ class CardWidget extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'you will be charged ₹600\nevery 6 Months ',
-                    softWrap: true,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                children: [
+                  Flexible(
+                    child: Text(
+                      "${widget.doc['reportLocation']}",
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  Text('6 months')
+                  IconButton(onPressed: () {}, icon: Icon(Icons.call))
                 ],
               ),
             ),
@@ -70,60 +92,33 @@ class CardWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'you will be charged ₹600\nevery 6 Months ',
-                        softWrap: true,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text('6 months')
-                    ],
-                  ),
+                  Text('Ocassion : ${widget.doc["ocassion"]}'),
                   const SizedBox(height: 10),
-                  const Text('Details'),
+                  Text('Type Of Food : ${widget.doc["typeOfFood"]}'),
                   const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Monthly Subscription',
-                        softWrap: true,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text('₹ 600')
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Discount Voucher XYZ',
-                        softWrap: true,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text('- 0.0')
+                    children: [
+                      Text('Qty of Food : ${widget.doc["quantityOfFood"]}'),
+                      Row(
+                        children: [
+                          Text('Veg/Non-veg : '),
+                          Icon(Icons.check_box_outline_blank,color: isVeg?Colors.green:Colors.red,),
+                        ],
+                      )
                     ],
                   ),
                   const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Total',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                        softWrap: true,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text('₹ 600')
-                    ],
-                  ),
+                  Text('Preferred Time : ${widget.doc["preferredTime"]}'),
+                  const SizedBox(height: 10),
+                  widget.isAdmin ?
+                  ElevatedButton(
+                    onPressed: (){
+
+                    },
+                    child: Text('Change State'),
+                  ) : Container()
+
                 ],
               ),
             ),
