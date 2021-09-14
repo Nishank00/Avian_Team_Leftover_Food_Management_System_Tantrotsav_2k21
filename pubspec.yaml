@@ -47,9 +47,7 @@ dependencies:
   cached_network_image: ^3.1.0
   toggle_switch: ^1.2.0
   numberpicker: ^2.0.1
-  date_format: ^2.0.4
-
-
+  date_format: ^2.0.4 
 dev_dependencies:
   flutter_test:
     sdk: flutter
