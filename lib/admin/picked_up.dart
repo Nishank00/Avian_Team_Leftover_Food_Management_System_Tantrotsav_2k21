@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:prasad/config.dart';
 
+import 'expandable.dart';
+
 class PickedUp extends StatefulWidget {
   const PickedUp({Key? key}) : super(key: key);
 
@@ -20,7 +22,7 @@ class _PickedUpState extends State<PickedUp> {
         body: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection("FoodTickets")
-                .where('status', isEqualTo: 'waiting for a donation')
+                .where('status', isEqualTo: 'Waiting for distribution')
                 .orderBy('createdAt', descending: true)
                 .snapshots(),
             // ignore: missing_return
@@ -46,12 +48,12 @@ class _PickedUpState extends State<PickedUp> {
                 );
               }
               if (snapshot.data!.docs.isNotEmpty) {
-                return const Center(
-                  child: Text(
-                    "There are no Pending orders.",
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  ),
+                  return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    final doc = snapshot.data!.docs[index];
+                    return CardWidget(doc: doc,isAdmin: true,);
+                  },
                 );
               } else {
                 return Container();

@@ -1,25 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:prasad/config.dart';
 
 class CardWidget extends StatefulWidget {
   final doc;
   final bool isAdmin;
-   const CardWidget({Key? key,required this.doc, required this.isAdmin}) : super(key: key);
+  const CardWidget({Key? key, required this.doc, required this.isAdmin})
+      : super(key: key);
 
   @override
   State<CardWidget> createState() => _CardWidgetState();
 }
 
 class _CardWidgetState extends State<CardWidget> {
-     bool isVeg=true;
+  bool isVeg = true;
 
   @override
-  void initState (){
-    if( widget.doc['isVeg']==1){
+  void initState() {
+    if (widget.doc['isVeg'] == 1) {
       isVeg = false;
-
-    }else{
+    } else {
       isVeg = true;
     }
     super.initState();
@@ -28,7 +30,7 @@ class _CardWidgetState extends State<CardWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
       child: Container(
         decoration: BoxDecoration(
           gradient: const LinearGradient(colors: [
@@ -103,7 +105,10 @@ class _CardWidgetState extends State<CardWidget> {
                       Row(
                         children: [
                           Text('Veg/Non-veg : '),
-                          Icon(Icons.check_box_outline_blank,color: isVeg?Colors.green:Colors.red,),
+                          Icon(
+                            Icons.check_box_outline_blank,
+                            color: isVeg ? Colors.green : Colors.red,
+                          ),
                         ],
                       )
                     ],
@@ -111,14 +116,22 @@ class _CardWidgetState extends State<CardWidget> {
                   const SizedBox(height: 10),
                   Text('Preferred Time : ${widget.doc["preferredTime"]}'),
                   const SizedBox(height: 10),
-                  widget.isAdmin ?
-                  ElevatedButton(
-                    onPressed: (){
-
-                    },
-                    child: Text('Change State'),
-                  ) : Container()
-
+                  widget.isAdmin
+                      ? ElevatedButton(
+                          onPressed: () {
+                            changeState();
+                          },
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(primaryColor),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side: BorderSide(color: primaryColor)))),
+                          child: Text('Change State'),
+                        )
+                      : Container()
                 ],
               ),
             ),
@@ -127,4 +140,34 @@ class _CardWidgetState extends State<CardWidget> {
       ),
     );
   }
-}
+    Future<void> changeState() async {
+      if (widget.doc['status'] == 'Waiting for approval') {
+          await FirebaseFirestore.instance
+          .collection("FoodTickets")
+          .doc(widget.doc['reportNumber'])
+          .update({
+           'status' : 'Waiting for pick up'
+          });
+      } else if (widget.doc['status'] == 'Waiting for pick up')  {
+        await FirebaseFirestore.instance
+          .collection("FoodTickets")
+          .doc(widget.doc['reportNumber'])
+          .update({
+           'status' : 'Waiting for distribution'
+          });
+      } else if (widget.doc['status'] == 'Waiting for distribution') { {
+        await FirebaseFirestore.instance
+          .collection("FoodTickets")
+          .doc(widget.doc['reportNumber'])
+          .update({
+           'status' : 'Happily delivered'
+          });
+      }
+    
+          
+
+      Fluttertoast.showToast(msg: "status Changed");
+   
+  }
+    }
+    }

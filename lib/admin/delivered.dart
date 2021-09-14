@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:prasad/config.dart';
 
+import 'expandable.dart';
+
 class Delivered extends StatefulWidget {
   const Delivered({Key? key}) : super(key: key);
 
@@ -46,12 +48,12 @@ class _DeliveredState extends State<Delivered> {
                 );
               }
               if (snapshot.data!.docs.isNotEmpty) {
-                return const Center(
-                  child: Text(
-                    "There are no Pending orders.",
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  ),
+               return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    final doc = snapshot.data!.docs[index];
+                    return CardWidget(doc: doc,isAdmin: true,);
+                  },
                 );
               } else {
                 return Container();
