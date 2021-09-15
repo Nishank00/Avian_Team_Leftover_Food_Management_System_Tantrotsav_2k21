@@ -29,6 +29,7 @@ class _CardWidgetState extends State<CardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle style = TextStyle(color: Colors.white);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       child: Container(
@@ -77,17 +78,20 @@ class _CardWidgetState extends State<CardWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text('Status of your food : ',style: style),
                   Flexible(
                     child: Text(
                       "${widget.doc['status']}",
                        softWrap: true,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
+                            style: style
                     ),
                   ),
                   SizedBox(
                     height: 10,
                   ),
+                  Text('Address : ',style: style),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -96,7 +100,8 @@ class _CardWidgetState extends State<CardWidget> {
                           "${widget.doc['reportLocation']}",
                           softWrap: true,
                           maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                          overflow: TextOverflow.ellipsis
+                          ,style: style
                         ),
                       ),
                       widget.isAdmin ? 
@@ -111,17 +116,17 @@ class _CardWidgetState extends State<CardWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Ocassion : ${widget.doc["ocassion"]}'),
+                  Text('Ocassion : ${widget.doc["ocassion"]}',style: style),
                   const SizedBox(height: 10),
-                  Text('Type Of Food : ${widget.doc["typeOfFood"]}'),
+                  Text('Type Of Food : ${widget.doc["typeOfFood"]}',style: style),
                   const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Qty of Food : ${widget.doc["quantityOfFood"]}'),
+                      Text('Qty of Food : ${widget.doc["quantityOfFood"]}',style: style),
                       Row(
                         children: [
-                          Text('Veg/Non-veg : '),
+                          Text('Veg/Non-veg : ',style: style),
                           Icon(
                             Icons.check_box_outline_blank,
                             color: isVeg ? Colors.green : Colors.red,
@@ -131,7 +136,7 @@ class _CardWidgetState extends State<CardWidget> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  Text('Preferred Time : ${widget.doc["preferredTime"]}'),
+                  Text('Preferred Time : ${widget.doc["preferredTime"]}',style: style),
                   const SizedBox(height: 10),
                   widget.isAdmin
                       ? Row(
