@@ -51,7 +51,10 @@ class _PendingTicketState extends State<PendingTicket> {
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     final doc = snapshot.data!.docs[index];
-                    return CardWidget(doc: doc,isAdmin: true,);
+                    return CardWidget(
+                      doc: doc,
+                      isAdmin: true,
+                    );
                   },
                 );
               }

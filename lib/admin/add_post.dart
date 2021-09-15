@@ -76,7 +76,7 @@ class _AddPostState extends State<AddPost> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false ,
       appBar: AppBar(
         backgroundColor: primaryColor,
         title: Text("Add Post"),

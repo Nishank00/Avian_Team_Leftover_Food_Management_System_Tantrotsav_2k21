@@ -3,6 +3,7 @@ import 'package:prasad/admin/add_post.dart';
 import 'package:prasad/admin/delivered.dart';
 import 'package:prasad/admin/pending_tickets.dart';
 import 'package:prasad/admin/picked_up.dart';
+import 'package:prasad/admin/stale.dart';
 import 'package:prasad/admin/waiting_pickup.dart';
 import 'package:prasad/config.dart';
 
@@ -45,6 +46,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
     options.add(Option('Add Post', () {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => AddPost()));
+    }));
+    options.add(Option('Stale Food', () {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Stale()));
     }));
   }
 

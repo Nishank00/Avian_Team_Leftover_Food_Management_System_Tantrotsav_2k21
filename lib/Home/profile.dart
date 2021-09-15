@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:prasad/Home/nearby_ngos.dart';
 
 import 'package:prasad/config.dart';
 import 'package:prasad/loginpage.dart';
@@ -20,22 +21,8 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   FirebaseAuth _auth = FirebaseAuth.instance;
-  String userName = 'Thank you for the suuport';
+  String userName = 'Thank you for the support';
   String photoUrl = '';
-
-  getUserName() {
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get()
-        .then((snapshot) {
-      setState(() {
-        userName = snapshot.data()!['fullName'];
-        photoUrl = snapshot.data()!['profilePhoto'];
-      });
-      print(photoUrl);
-    });
-  }
 
   Future<void> _showMyDialog() async {
     return showDialog<void>(
@@ -102,7 +89,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    getUserName();
+    //getUserName();
   }
 
   TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
@@ -177,9 +164,29 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           Padding(
+            padding: EdgeInsets.only(top: 16),
+          ),
+          Card(
+            elevation: 3,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: EdgeInsets.only(left: 20, right: 20),
+            child: ListTile(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => NearByNGO()));
+              },
+              leading: Icon(
+                Icons.location_on,
+                color: Colors.blue,
+              ),
+              title: Text('Near-by NGOs'),
+              trailing: Icon(Icons.navigate_next),
+            ),
+          ),
+          Padding(
             padding: EdgeInsets.only(top: 10),
           ),
-       
           Padding(
             padding: EdgeInsets.only(top: 10),
           ),
@@ -204,7 +211,6 @@ class _ProfileState extends State<Profile> {
           Padding(
             padding: EdgeInsets.only(top: 10),
           ),
-       
           Padding(
             padding: EdgeInsets.only(top: 10),
           ),
