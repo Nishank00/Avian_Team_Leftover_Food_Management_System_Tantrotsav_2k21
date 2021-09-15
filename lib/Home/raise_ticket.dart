@@ -389,6 +389,7 @@ class _RaiseNewDonationState extends State<RaiseNewDonation> {
                   'fruits',
                   'milk, yoghurt, cheese and/or alternatives',
                   'lean meat, fish, poultry, eggs, nuts and legumes',
+                  'Stale food for decomposition',
                   'Other'
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(

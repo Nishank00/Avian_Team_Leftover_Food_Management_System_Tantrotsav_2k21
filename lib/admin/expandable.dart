@@ -77,8 +77,13 @@ class _CardWidgetState extends State<CardWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "${widget.doc['status']}",
+                  Flexible(
+                    child: Text(
+                      "${widget.doc['status']}",
+                       softWrap: true,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   SizedBox(
                     height: 10,
@@ -129,20 +134,39 @@ class _CardWidgetState extends State<CardWidget> {
                   Text('Preferred Time : ${widget.doc["preferredTime"]}'),
                   const SizedBox(height: 10),
                   widget.isAdmin
-                      ? ElevatedButton(
-                          onPressed: () {
-                            changeState();
-                          },
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(primaryColor),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: primaryColor)))),
-                          child: Text('Change State'),
-                        )
+                      ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                              onPressed: () {
+                                changeState();
+                              },
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(primaryColor),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(18.0),
+                                          side: BorderSide(color: primaryColor)))),
+                              child: Text('Change State'),
+                            ),
+                             ElevatedButton(
+                              onPressed: () {
+                                changeStaleState();
+                              },
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(primaryColor),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(18.0),
+                                          side: BorderSide(color: primaryColor)))),
+                              child: Text('Stale Food?'),
+                            ),
+                        ],
+                      )
                       : Container()
                 ],
               ),
@@ -175,4 +199,15 @@ class _CardWidgetState extends State<CardWidget> {
       Fluttertoast.showToast(msg: "status Changed");
     }
   }
+  Future<void> changeStaleState() async {
+    
+      await FirebaseFirestore.instance
+          .collection("FoodTickets")
+          .doc(widget.doc['reportNumber'])
+          .update({'status': "Your (Food Seems Stale) don't worry we will decompose it and it will be used for better purpose"});
+    
+
+      Fluttertoast.showToast(msg: "status Changed");
+  }
+  
 }
