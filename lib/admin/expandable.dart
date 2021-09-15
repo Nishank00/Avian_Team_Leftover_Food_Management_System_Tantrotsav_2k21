@@ -139,38 +139,40 @@ class _CardWidgetState extends State<CardWidget> {
                   Text('Preferred Time : ${widget.doc["preferredTime"]}',style: style),
                   const SizedBox(height: 10),
                   widget.isAdmin
-                      ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                              onPressed: () {
-                                changeState();
-                              },
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(primaryColor),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(18.0),
-                                          side: BorderSide(color: primaryColor)))),
-                              child: Text('Change State'),
-                            ),
-                             ElevatedButton(
-                              onPressed: () {
-                                changeStaleState();
-                              },
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(primaryColor),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(18.0),
-                                          side: BorderSide(color: primaryColor)))),
-                              child: Text('Stale Food?'),
-                            ),
-                        ],
+                      ? Flexible(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  changeState();
+                                },
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(primaryColor),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(18.0),
+                                            side: BorderSide(color: primaryColor)))),
+                                child: Text('Change State'),
+                              ),
+                               ElevatedButton(
+                                onPressed: () {
+                                  changeStaleState();
+                                },
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(primaryColor),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(18.0),
+                                            side: BorderSide(color: primaryColor)))),
+                                child: Text('Stale Food?'),
+                              ),
+                          ],
+                        ),
                       )
                       : Container()
                 ],
